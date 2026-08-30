@@ -5,6 +5,10 @@ theory (github.com/joschabach/micropsi2), patched to run on a modern Python
 (3.10+), plus two driver scripts that build and run actual agents on the
 Dörner-Island world and log their real `DoernerianEmotionalModulators` state.
 
+For a full write-up of how the Survivor agent chooses a direction and moves
+toward a resource, see [`docs/agent-decision-making.pdf`](docs/agent-decision-making.pdf)
+(source: [`docs/agent-decision-making.md`](docs/agent-decision-making.md)).
+
 ## 1. Clone the repo
 
 ```bash
