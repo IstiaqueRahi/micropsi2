@@ -1,0 +1,73 @@
+diff --git a/micropsi_core/runtime.py b/micropsi_core/runtime.py
+index 664e0212..871d7197 100755
+--- a/micropsi_core/runtime.py
++++ b/micropsi_core/runtime.py
+@@ -1358,7 +1358,7 @@ def get_netapi_autocomplete_data(nodenet_uid, name=None):
+             if name.startswith('_'):
+                 continue
+             if inspect.isroutine(thing):
+-                argspec = inspect.getargspec(thing)
++                argspec = inspect.getfullargspec(thing)
+                 arguments = argspec.args[1:]
+                 defaults = argspec.defaults or []
+                 params = []
+@@ -1571,7 +1571,7 @@ def parse_recipe_or_operations_file(path, reload=False, category_overwrite=False
+             # import from another file of the same mode. ignore, to avoid
+             # false duplicate-function-name alerts
+             continue
+-        argspec = inspect.getargspec(func)
++        argspec = inspect.getfullargspec(func)
+         if mode == 'recipes':
+             arguments = argspec.args[1:]
+         elif mode == 'operations':
+diff --git a/micropsi_core/tools.py b/micropsi_core/tools.py
+index 981febf8..015a7781 100644
+--- a/micropsi_core/tools.py
++++ b/micropsi_core/tools.py
+@@ -151,9 +151,10 @@ class Bunch(dict):
+ 
+ 
+ import collections
++import collections.abc
+ 
+ 
+-class OrderedSet(collections.OrderedDict, collections.MutableSet):
++class OrderedSet(collections.OrderedDict, collections.abc.MutableSet):
+ 
+     def update(self, *args, **kwargs):
+         if kwargs:
+diff --git a/micropsi_core/world/island/island.py b/micropsi_core/world/island/island.py
+index 21878606..3c3ededa 100644
+--- a/micropsi_core/world/island/island.py
++++ b/micropsi_core/world/island/island.py
+@@ -322,7 +322,7 @@ class Survivor(WorldAdapter):
+             return
+ 
+         effortvector = ((50*self.datatargets['loco_east'])+(50 * -self.datatargets['loco_west']),
+-                        (50*self.datatargets['loco_north'])-(50* -self.datatargets['loco_south']))
++                        (50*self.datatargets['loco_north'])-(50*self.datatargets['loco_south']))
+         desired_position = (self.position[0] + effortvector[0], self.position[1] + effortvector[1])
+         self.datatargets['loco_east'] = 0
+         self.datatargets['loco_west'] = 0
+@@ -357,7 +357,7 @@ class Survivor(WorldAdapter):
+                 if self.datatargets[datatarget] >= 1 and self.action_cooloff <= 0:
+                     self.datatargets[datatarget] = 0
+                     if hasattr(nearest_worldobject, datatarget):
+-                        cando, delta_energy, delta_water, delta_integrity = nearest_worldobject.action_eat()
++                        cando, delta_energy, delta_water, delta_integrity = getattr(nearest_worldobject, datatarget)()
+                     else:
+                         cando, delta_energy, delta_water, delta_integrity = False, 0, 0, 0
+                     if cando:
+diff --git a/micropsi_server/micropsi_app.py b/micropsi_server/micropsi_app.py
+index 10c22f60..28c94a9e 100755
+--- a/micropsi_server/micropsi_app.py
++++ b/micropsi_server/micropsi_app.py
+@@ -105,7 +105,7 @@ def rpc(command, route_prefix="/rpc/", method="GET", permission_required=None):
+             else:
+                 # kwargs.update({"argument": argument, "permissions": permissions, "user_id": user_id, "token": token})
+                 if kwargs is not None:
+-                    arguments = dict((name, kwargs[name]) for name in inspect.getargspec(func).args if name in kwargs)
++                    arguments = dict((name, kwargs[name]) for name in inspect.getfullargspec(func).args if name in kwargs)
+                     arguments.update(kwargs)
+                 else:
+                     arguments = {}

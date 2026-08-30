@@ -151,9 +151,10 @@ class Bunch(dict):
 
 
 import collections
+import collections.abc
 
 
-class OrderedSet(collections.OrderedDict, collections.MutableSet):
+class OrderedSet(collections.OrderedDict, collections.abc.MutableSet):
 
     def update(self, *args, **kwargs):
         if kwargs:

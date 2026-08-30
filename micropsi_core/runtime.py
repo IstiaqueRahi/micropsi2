@@ -1358,7 +1358,7 @@ def get_netapi_autocomplete_data(nodenet_uid, name=None):
             if name.startswith('_'):
                 continue
             if inspect.isroutine(thing):
-                argspec = inspect.getargspec(thing)
+                argspec = inspect.getfullargspec(thing)
                 arguments = argspec.args[1:]
                 defaults = argspec.defaults or []
                 params = []
@@ -1571,7 +1571,7 @@ def parse_recipe_or_operations_file(path, reload=False, category_overwrite=False
             # import from another file of the same mode. ignore, to avoid
             # false duplicate-function-name alerts
             continue
-        argspec = inspect.getargspec(func)
+        argspec = inspect.getfullargspec(func)
         if mode == 'recipes':
             arguments = argspec.args[1:]
         elif mode == 'operations':

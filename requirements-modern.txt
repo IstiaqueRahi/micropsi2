@@ -1,0 +1,11 @@
+bottle
+numpy
+scipy
+matplotlib
+WebOb
+WebTest
+beautifulsoup4
+waitress
+six
+pillow
+imageio
