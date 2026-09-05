@@ -9,3 +9,4 @@ waitress
 six
 pillow
 imageio
+imageio-ffmpeg

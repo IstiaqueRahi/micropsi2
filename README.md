@@ -9,6 +9,13 @@ For a full write-up of how the Survivor agent chooses a direction and moves
 toward a resource, see [`docs/agent-decision-making.pdf`](docs/agent-decision-making.pdf)
 (source: [`docs/agent-decision-making.md`](docs/agent-decision-making.md)).
 
+The newer reproducible multi-agent survival/predation study is implemented in
+`psi_survival/`. Its focused 18-cell design, provenance guarantees, pilot and
+freeze gates, and command-line workflow are documented in
+[`docs/psi-survival-v2.md`](docs/psi-survival-v2.md). It is intentionally
+described as a hybrid model rather than a complete MicroPsi or Cai et al.
+reproduction.
+
 ## 1. Clone the repo
 
 ```bash
